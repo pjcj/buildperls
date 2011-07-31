@@ -1,0 +1,6 @@
+*.org
+*.bak
+*~
+tmp/
+src/
+Tux/

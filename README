@@ -1,0 +1,35 @@
+Builds perl installations.
+
+I originally got this from H.Merijn Brand at the QA Hackathon in Vienna.
+
+buildperl.pl comes from
+http://cpansearch.perl.org/src/MHX/Devel-PPPort-3.19_03/devel/buildperl.pl.
+See that file for author and copyright details.
+    Marcus Holland-Moritz.
+    Paul Marquess.
+    Kenneth Albanowski.
+
+Is has been modified.  I think H.Merijn Brand added the config changes.  I
+suspect that I added the jobs stuff.
+
+mklinks makes links in /usr/local/bin.  It probably needs to be run as root.
+
+runcpan installs various cpan modules.  It will need to be configured for the
+modules to install and perhaps for the config.  It should probably be changed
+to work on cpanm or something.
+
+The perl source tarballs will need to be downlaoded and stored in a directory.
+If you don't have them already they can be downloaded with:
+
+  wget -r -nd -np -Agz,bz2 http://pjcj.sytes.net/pjcj.net/html/perl/src/
+
+The script should really download them itself.  Does perlbrew know how to do
+that?
+
+The installed perls need to live somewhere.  I put them in
+/usr/local/pkg/perl.
+
+BUILD is an example script to build the whole thing.
+
+
+Paul Johnson - http://www.pjcj.net

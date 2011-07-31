@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+for my $d (</usr/local/pkg/perl/{default,thread}/*>)
+{
+    my ($t, $n) = $d =~ m|([^/]+)/([^/]+)$|;
+    $n =~ s/-5/5/;
+    $n .= "-thr" if $t eq "thread";
+    print "$d => $n\n";
+    $n = "/usr/local/bin/$n";
+    unlink $n;
+    my ($perl) = <$d/bin/perl*>;
+    symlink $perl, $n or die "Can't ln $perl => $n: $!";
+}

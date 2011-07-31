@@ -1,0 +1,102 @@
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+
+my $Sw = $ENV{HOME};
+# system "mkdir -p $Sw";
+my $cpandir = "http://cpan.wanadoo.nl/";
+my $f = "$Sw/.cpan";
+-d $f or mkdir $f, 0750 or die "Can't mkdir $f: $!";
+$f .= "/CPAN";
+-d $f or mkdir $f, 0750 or die "Can't mkdir $f: $!";
+$f .= "/MyConfig.pm";
+open F, ">", $f         or die "Can't open $f: $!";
+print F <<EOF;
+\$CPAN::Config = {
+    'build_cache' => q[100000],
+    'build_dir' => q[$Sw/.cpan/build],
+    'cache_metadata' => q[1],
+    'cpan_home' => q[$Sw/.cpan],
+    'dontload_hash' => {  },
+    'ftp' => q[/usr/bin/ftp],
+    'ftp_proxy' => q[],
+    'getcwd' => q[cwd],
+    'gpg' => q[/usr/bin/gpg],
+    'gzip' => q[/bin/gzip],
+    'histfile' => q[$Sw/.cpan/histfile],
+    'histsize' => q[100],
+    'http_proxy' => q[],
+    'inactivity_timeout' => q[0],
+    'index_expire' => q[1],
+    'inhibit_startup_message' => q[0],
+    'keep_source_where' => q[$Sw/.cpan_sources],
+    'lynx' => q[/usr/bin/lynx],
+    'make' => q[/usr/bin/make],
+    'make_arg' => q[],
+    'make_install_arg' => q[],
+    'makepl_arg' => q[],
+    'ncftp' => q[],
+    'ncftpget' => q[],
+    'no_proxy' => q[],
+    'pager' => q[less],
+    'prerequisites_policy' => q[follow],
+    'scan_cache' => q[atstart],
+    'shell' => q[/bin/zsh],
+    'tar' => q[/bin/tar],
+    'term_is_latin' => q[1],
+    'unzip' => q[/usr/bin/unzip],
+    'urllist' => [q[$cpandir]],
+    'wget' => q[/usr/bin/wget],
+};
+1;
+EOF
+close F or die "Can't close $f: $!";
+
+my $mods =
+{
+    "5.6.1"        => [qw(Digest::MD5 Storable Pod::Coverage::CountParents
+                          Getopt::Long Test::More)],
+    "5.6.1-thr"    => [qw(Digest::MD5 Storable
+                          Getopt::Long Test::More)],
+    "5.6.2"        => [qw(Digest::MD5 Storable
+                          Getopt::Long)],
+    "5.6.2-thr"    => [qw(Digest::MD5 Storable
+                          Getopt::Long)],
+    "5.8.0"        => [qw(Pod::Coverage::CountParents
+                          Getopt::Long)],
+    "5.8.0-thr"    => [qw(Getopt::Long)],
+};
+
+$mods->{$_} ||= [] for map { /perl-(5\.\d+\.\d+)\.tar/ ? ($1, "$1-thr") : () }
+                       <src/perl-5*>;
+
+push @$_, "Test::Harness", "Test::Warn" for values %$mods;
+
+for (keys %$mods)
+{
+    push @{$mods->{$_}},
+         qw(
+             Template
+             PPI::HTML
+             Perl::Tidy
+             Pod::Coverage
+             Test::Differences
+             Parallel::Iterator
+            )
+        unless /-thr/;
+}
+
+for my $v (sort keys %$mods)
+{
+    print "perl$v\n";
+    for my $m (@{$mods->{$v}})
+    {
+        print "$m\n";
+        system "perl$v", "-M$m", "-e", 0 or next;
+        my $cmd = "perl$v -MCPAN -e 'CPAN::Shell->force(qw(install $m))'" .
+                  " < /dev/null";
+        print "$cmd\n";
+        system $cmd;
+    }
+}
