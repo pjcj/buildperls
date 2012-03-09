@@ -68,7 +68,7 @@ my $mods =
     "5.8.0-thr"    => [qw(Getopt::Long)],
 };
 
-$mods->{$_} ||= [] for map { /perl-(5\.\d+\.\d+)\.tar/ ? ($1, "$1-thr") : () }
+$mods->{$_} ||= [] for map { /perl-(5\.\d+\.\d+.*?)\.tar/ ? ($1, "$1-thr") : () }
                        <src/perl-5*>;
 
 push @$_, "Test::Harness", "Test::Warn" for values %$mods;
