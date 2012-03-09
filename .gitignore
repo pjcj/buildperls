@@ -2,5 +2,5 @@
 *.bak
 *~
 tmp/
-src/
+src*/
 Tux/
