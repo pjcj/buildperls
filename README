@@ -23,6 +23,8 @@ If you don't have them already they can be downloaded with:
 
   wget -r -nd -np -Agz,bz2 http://pjcj.sytes.net/pjcj.net/html/perl/src/
 
+It's probably better to get them from http://www.cpan.org/src/5.0/ though.
+
 The script should really download them itself.  Does perlbrew know how to do
 that?
 
