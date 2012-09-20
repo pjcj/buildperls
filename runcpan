@@ -83,11 +83,12 @@ for (keys %$mods)
              Perl::Tidy
              Pod::Coverage
              Test::Differences
+             Readonly
             );
     push @{$mods->{$_}}, "Parallel::Iterator" unless /^5\.6\./;
     push @{$mods->{$_}}, "Algorithm::C3"      if     /^5\.8\.9\b/;
     push @{$mods->{$_}}, "Moose"              unless /^5\.[68]\.[012]\b/;
-    push @{$mods->{$_}}, "Moo"                unless /^5\.[68]\.[01]\b/;
+    push @{$mods->{$_}}, "Moo"                unless /^5\.[68]\.[012]\b/;
     push @{$mods->{$_}}, "DBM::Deep"          unless /^5\.[68]\.[01234]\b/;
 }
 
