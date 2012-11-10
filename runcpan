@@ -3,6 +3,8 @@
 use warnings;
 use strict;
 
+$ENV{PATH} = join ":", grep !/perlbrew/, split ":", $ENV{PATH};
+
 my $Sw = $ENV{HOME};
 # system "mkdir -p $Sw";
 my $cpandir = "http://cpan.wanadoo.nl/";
