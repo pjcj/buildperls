@@ -7,7 +7,7 @@ $ENV{PATH} = join ":", grep !/perlbrew/, split ":", $ENV{PATH};
 
 my $Sw = $ENV{HOME};
 # system "mkdir -p $Sw";
-my $cpandir = "http://cpan.wanadoo.nl/";
+my $cpandir = "http://cpan.org/";
 my $f = "$Sw/.cpan";
 -d $f or mkdir $f, 0750 or die "Can't mkdir $f: $!";
 $f .= "/CPAN";
