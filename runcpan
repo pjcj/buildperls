@@ -92,6 +92,7 @@ for (keys %$mods)
     push @{$mods->{$_}}, "Moose"              unless /^5\.[68]\.[012]\b/;
     push @{$mods->{$_}}, "Moo"                unless /^5\.[68]\.[012]\b/;
     push @{$mods->{$_}}, "DBM::Deep"          unless /^5\.[68]\.[01234]\b/;
+    push @{$mods->{$_}}, "Sereal"             unless /^5\.6\./;
 }
 
 for my $v (sort keys %$mods)
