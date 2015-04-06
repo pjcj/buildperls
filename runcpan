@@ -77,7 +77,10 @@ push @$_, "Test::Harness", "Test::Warn" for values %$mods;
 
 for (keys %$mods)
 {
-    push @{$mods->{$_}}, "CGI"                unless /^5\.(?:6|8|1.)\./;
+    push @{$mods->{$_}},
+         qw(
+             HTML::Entities
+            );
     next if /-thr/;
     push @{$mods->{$_}},
          qw(
