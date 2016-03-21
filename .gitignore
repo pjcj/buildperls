@@ -1,6 +1,7 @@
 *.org
 *.bak
 *~
+tags*
 tmp/
 src*/
 Tux/
