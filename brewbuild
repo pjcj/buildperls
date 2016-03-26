@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+perl=$1
+
+if [ -e $PERLBREW_ROOT/perls/perl-$perl -a \
+     -e $PERLBREW_ROOT/perls/perl-$perl-thread-multi ]; then
+    echo perl version $perl already built
+    exit
+fi
+
+echo building perl version $perl
+
+perlbrew install-multiple $perl --noman --both thread --force -j 3 --notest

@@ -3,14 +3,16 @@
 use strict;
 use warnings;
 
-for my $d (</usr/local/pkg/perl/{default,thread}/*>)
+my $root = $ARGV[0] // $ENV{PERLBREW_ROOT} // die "No root";
+
+for my $d (<$root/perls/*>)
 {
-    my ($t, $n) = $d =~ m|([^/]+)/([^/]+)$|;
+    my ($n, $t) = $d =~ m|/([^/]+\d)([^/]*)$|;
     $n =~ s/-5/5/;
-    $n .= "-thr" if $t eq "thread";
+    $n .= "-thr" if $t =~ /thread/;
     print "$d => $n\n";
     $n = "/usr/local/bin/$n";
     unlink $n;
-    my ($perl) = <$d/bin/perl*>;
+    my ($perl) = "$d/bin/perl";
     symlink $perl, $n or die "Can't ln $perl => $n: $!";
 }
