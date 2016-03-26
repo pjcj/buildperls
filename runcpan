@@ -70,7 +70,8 @@ my $mods =
     "5.8.0-thr"    => [qw(Getopt::Long)],
 };
 
-$mods->{$_} ||= [] for map { chomp; $_ } `ls /usr/local/bin | grep perl5`;
+$mods->{$_} ||= []
+    for map { chomp; s/^perl//r } `ls /usr/local/bin | grep perl5`;
 
 push @$_, "Test::Harness", "Test::Warn" for values %$mods;
 
