@@ -7,12 +7,10 @@ my $root = $ARGV[0] // $ENV{PERLBREW_ROOT} // die "No root";
 
 for my $d (<$root/perls/*>)
 {
-    my ($n, $t) = $d =~ m|/([^/]+\d)([^/]*)$|;
-    $n =~ s/-5/5/;
-    $n .= "-thr" if $t =~ /thread/;
-    print "$d => $n\n";
-    $n = "/usr/local/bin/$n";
+    my $p = $d =~ s|.*/||r;
+    print "linking $p\n";
+    my $n = "/usr/local/bin/$p";
     unlink $n;
-    my ($perl) = "$d/bin/perl";
+    my $perl = "$d/bin/perl";
     symlink $perl, $n or die "Can't ln $perl => $n: $!";
 }

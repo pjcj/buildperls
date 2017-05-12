@@ -2,14 +2,18 @@
 
 set -e
 
-perl=$1
+perl="$1"
+dc="dc-$perl"
+opts="--force -j 3 --noman --notest"
 
-if [ -e $PERLBREW_ROOT/perls/perl-$perl -a \
-     -e $PERLBREW_ROOT/perls/perl-$perl-thread-multi ]; then
-    echo perl version $perl already built
-    exit
+if [ ! -e "$PERLBREW_ROOT/perls/$dc" ]; then
+    echo building perl version $dc
+    perlbrew install $perl $opts          --as "$dc"
 fi
 
-echo building perl version $perl
+if [ ! -e "$PERLBREW_ROOT/perls/$dc-thr" ]; then
+    echo building perl version $dc-thr
+    perlbrew install $perl $opts --thread --as "$dc-thr"
+fi
 
-perlbrew install-multiple $perl --noman --both thread --force -j 3 --notest
+echo perl version $dc built

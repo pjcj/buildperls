@@ -71,7 +71,7 @@ my $mods =
 };
 
 $mods->{$_} ||= []
-    for map { chomp; s/^perl//r } `ls /usr/local/bin | grep perl5`;
+    for map { chomp; s/^dc-//r } `ls /usr/local/bin | grep dc-5`;
 
 push @$_, "Test::Harness", "Test::Warn" for values %$mods;
 
@@ -101,12 +101,13 @@ for (keys %$mods)
 
 for my $v (sort keys %$mods)
 {
-    print "perl$v\n";
+    my $perl = "dc-$v";
+    print "$perl\n";
     for my $m (@{$mods->{$v}})
     {
         print "  $m\n";
-        system "perl$v", "-M$m", "-e", 0 or next;
-        my $cmd = "perl$v -MCPAN -e 'CPAN::Shell->force(qw(install $m))'" .
+        system $perl, "-M$m", "-e", 0 or next;
+        my $cmd = "$perl -MCPAN -e 'CPAN::Shell->force(qw(install $m))'" .
                   " < /dev/null";
         print "  $cmd\n";
         system $cmd;
